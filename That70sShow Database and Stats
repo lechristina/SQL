@@ -1,0 +1,64 @@
+/* THAT 70's SHOW STATS*/
+
+CREATE TABLE person (id INTEGER PRIMARY KEY AUTOINCREMENT, fullname TEXT, age INTEGER);
+
+INSERT INTO person (fullname, age) VALUES ("Eric Foreman", 44);
+INSERT INTO person (fullname, age) VALUES ("Donna Pinciotti",43);
+INSERT INTO person (fullname, age) VALUES ("Michael Kelso", 45);
+INSERT INTO person (fullname, age) VALUES ("Jackie Burkhart", 39);
+INSERT INTO person (fullname, age) VALUES ("Steven Hyde", 46);
+INSERT INTO person (fullname, age) VALUES ("Fez V", 43);
+
+CREATE TABLE hobbies (id INTEGER PRIMARY KEY AUTOINCREMENT, person_id INTEGER, name TEXT);
+
+INSERT INTO hobbies (person_id, name) VALUES (1, "startrek");
+INSERT INTO hobbies (person_id, name) VALUES (1, "music");
+INSERT INTO hobbies (person_id, name) VALUES (2, "basketball");
+INSERT INTO hobbies (person_id, name) VALUES (2, "friends");
+INSERT INTO hobbies (person_id, name) VALUES (3, "friends");
+INSERT INTO hobbies (person_id, name) VALUES (3, "joking");
+INSERT INTO hobbies (person_id, name) VALUES (4, "bossing");
+INSERT INTO hobbies (person_id, name) VALUES (4, "yelling");
+INSERT INTO hobbies (person_id, name) VALUES (5, "driving");
+INSERT INTO hobbies (person_id, name) VALUES (5, "joking");
+INSERT INTO hobbies (person_id, name) VALUES (6, "barber");
+INSERT INTO hobbies (person_id, name) VALUES (6, "fashion");
+
+CREATE TABLE married (id INTEGER PRIMARY KEY AUTOINCREMENT, person1_id INTEGER, person2_id INTEGER);
+INSERT INTO married (person1_id, person2_id)
+    VALUES (1, 2);
+INSERT INTO married (person1_id, person2_id)
+    VALUES (3, 4);
+    
+/* Which characters are married to each other? */
+SELECT a.fullname, b.fullname
+FROM married
+    JOIN person a
+    ON a.id = married.person1_id
+    JOIN person b
+    ON b.id = married.person2_id; 
+    
+/* List the people with their hobbies */
+SELECT person.fullname, hobbies.name
+FROM person
+    JOIN hobbies 
+    ON person.id = hobbies.person_id; 
+    
+ /* Create a count of the hobbies */
+SELECT hobbies.name, COUNT(*)
+    FROM hobbies
+    GROUP BY hobbies.name;
+    
+/* Specify the location of each hobby */    
+    SELECT hobbies.name,
+    CASE
+        WHEN hobbies.name = "barber" THEN "Indoor"
+        WHEN hobbies.name = "bossing" THEN "Indoor"
+        WHEN hobbies.name = "fashion" THEN "Indoor"
+        WHEN hobbies.name = "friends" THEN "Indoor"
+        WHEN hobbies.name = "joking" THEN "Indoor"
+        WHEN hobbies.name = "music" THEN "Indoor"
+        ELSE "Outdoor"
+    END as "Location"
+FROM hobbies
+GROUP BY hobbies.name;
